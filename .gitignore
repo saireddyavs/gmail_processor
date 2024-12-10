@@ -1,0 +1,24 @@
+# Ignore credentials and tokens
+config/credentials.json
+config/token.json
+
+# Ignore the database file
+data/emails.db
+
+# Ignore log files
+logs/gmail_processor.log
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment directories
+.venv/
+venv/
+env/
+
+# Ignore operating system files
+.DS_Store
+Thumbs.db
