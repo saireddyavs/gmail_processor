@@ -1,7 +1,7 @@
 import sqlite3
-from config import config
 from src.models.email import Email
 import logging
+from contextlib import closing
 
 logger = logging.getLogger("gmail_processor")
 
@@ -83,10 +83,11 @@ class EmailRepository:
 
 
 def get_email_repository(database_file):
-    try:
-        conn = sqlite3.connect(database_file)
-        conn.row_factory = sqlite3.Row  # Allow column-based access for debugging
-        return EmailRepository(conn)
+    try:       
+        with closing(sqlite3.connect(database_file)) as conn:
+            conn.row_factory = sqlite3.Row
+            email_repo = EmailRepository(conn)
+            return email_repo
     except sqlite3.Error as e:
         logger.error(f"Error connecting to the database: {e}")
         raise
