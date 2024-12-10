@@ -1,38 +1,9 @@
-import logging
-import os
+
 from src.repositories.email_repository import get_email_repository
 from src.services.gmail_service import get_gmail_service
 from src.services.rule_engine import RuleEngine
 from config import appconfig
-
-# --- Logging Setup ---
-def setup_logging():
-    """Setup logger for the application."""
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-
-    logger = logging.getLogger("gmail_processor")
-    logger.setLevel(logging.INFO)
-
-    # Create a file handler to write logs to a file
-    file_handler = logging.FileHandler("logs/gmail_processor.log")
-    file_handler.setLevel(logging.INFO)
-    file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(file_formatter)
-
-    # Create a stream handler to print logs to the console
-    stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
-    stream_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')  # Customize the console format
-    stream_handler.setFormatter(stream_formatter)
-
-    # Add both handlers to the logger
-    logger.addHandler(file_handler)
-    logger.addHandler(stream_handler)
-
-    logger.info("Logger is set up and working.")
-    return logger
-
+from logs import logs
 
 def initialize_services():
     """Initialize services like Gmail and Email repository."""
@@ -78,9 +49,10 @@ def main():
     """Main entry point for the application."""
     email_repo = None
     try:
+        appconfig_instance = appconfig.AppConfig()
         # Setup logger
         global logger
-        logger = setup_logging()
+        logger = logs.setup_logging(appconfig_instance.logs_file)
 
         # Initialize services
         email_repo, gmail_service, rule_engine = initialize_services()
