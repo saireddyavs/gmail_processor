@@ -78,7 +78,7 @@ class GmailService:
 
 
 
-def get_gmail_service():
-    return GmailService(config.CREDENTIALS_FILE, config.TOKEN_FILE, config.SCOPES)
+def get_gmail_service(credential_file,token_file,scopes):
+    return GmailService(credential_file,token_file,scopes)
 
 

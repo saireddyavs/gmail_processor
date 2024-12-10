@@ -4,6 +4,7 @@ from config import config
 from src.repositories.email_repository import get_email_repository
 from src.services.gmail_service import get_gmail_service
 from src.services.rule_engine import RuleEngine
+from config import appconfig
 
 
 # --- Logging Setup ---
@@ -33,21 +34,22 @@ logger.addHandler(stream_handler)
 logger.info("Logger is set up and working.")
 
 if __name__ == "__main__":
-    email_repo = get_email_repository()
+    appconfig=appconfig.AppConfig()
+    email_repo = get_email_repository(appconfig.database_file)
     email_repo.create_table()
 
-    gmail_service = get_gmail_service()
-    rule_engine = RuleEngine(config.RULES_FILE, gmail_service,logger)
+    gmail_service = get_gmail_service(appconfig.credentials_file,appconfig.token_file,appconfig.scopes)
+    rule_engine = RuleEngine(appconfig.rules_file, gmail_service,logger)
 
     emails = gmail_service.fetch_emails(1)
 
-    for email in emails:
-        email_repo.save(email)
+    # for email in emails:
+    #     email_repo.save(email)
 
-    emails = email_repo.get_all()
-    for email in emails:
-        if email.status != 'read':
-            rule_engine.process_email(email)
-            email_repo.update_status(email.id, email.status)
+    # emails = email_repo.get_all()
+    # for email in emails:
+    #     if email.status != 'read':
+    #         rule_engine.process_email(email)
+    #         email_repo.update_status(email.id, email.status)
 
     email_repo._conn.close()

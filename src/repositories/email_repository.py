@@ -82,9 +82,9 @@ class EmailRepository:
             raise
 
 
-def get_email_repository():
+def get_email_repository(database_file):
     try:
-        conn = sqlite3.connect(config.DATABASE_FILE)
+        conn = sqlite3.connect(database_file)
         conn.row_factory = sqlite3.Row  # Allow column-based access for debugging
         return EmailRepository(conn)
     except sqlite3.Error as e:
