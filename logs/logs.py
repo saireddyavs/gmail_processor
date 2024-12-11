@@ -16,17 +16,17 @@ def setup_logging(logs_file):
         os.makedirs('logs')
 
     logger = logging.getLogger("gmail_processor")
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     # Create a file handler to write logs to a file
     file_handler = logging.FileHandler(logs_file)
-    file_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.DEBUG)
     file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(file_formatter)
 
     # Create a stream handler to print logs to the console
     stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
+    stream_handler.setLevel(logging.DEBUG)
     stream_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')  # Customize the console format
     stream_handler.setFormatter(stream_formatter)
 
