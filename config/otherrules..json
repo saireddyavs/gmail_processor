@@ -1,0 +1,41 @@
+{
+    "conditions": [
+      {"field": "From", "predicate": "Equals", "value": "important@example.com"}
+    ],
+    "predicate": "Any",
+    "actions": [
+      {"action": "Mark as unread"}
+    ]
+  },
+  {
+    "conditions": [
+      {"field": "received_date", "predicate": "less than", "value": {"date": "2024-08-15", "unit": "days", "value": 7}},
+      {"field": "Subject", "predicate": "Does not Contain", "value": "Meeting"}
+    ],
+    "predicate": "All",
+    "actions": [
+      {"action": "Mark as read"},
+      {"action": "Move Message", "destination": "[Gmail]/Archive"}
+    ]
+  },
+  {
+    "conditions": [
+      {"field": "message", "predicate": "Contains", "value": "urgent"}
+    ],
+    "predicate": "Any",
+    "actions": [
+      {"action": "Mark as unread"},
+      {"action": "Move Message", "destination": "[Gmail]/Urgent"}
+    ]
+  }
+
+  {
+    "conditions": [
+      {"field": "From", "predicate": "Contains", "value": "camsonline"},
+      {"field": "Subject", "predicate": "Contains", "value": "newsletter"}
+    ],
+    "predicate": "Any",
+    "actions": [
+      {"action": "Move Message", "destination": "Markets"}
+    ]
+  }

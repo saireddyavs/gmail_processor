@@ -1,43 +1,12 @@
 [
   {
     "conditions": [
-      {"field": "From", "predicate": "Contains", "value": "noreply"},
-      {"field": "Subject", "predicate": "Contains", "value": "newsletter"}
+      {"field": "From", "predicate": "Contains", "value": "royalenfield"},
+      {"field": "Subject", "predicate": "Does not Contain", "value": "newsletter"}
     ],
     "predicate": "Any",
     "actions": [
-      {"action": "Mark as read"},
-      {"action": "Move Message", "destination": "[Gmail]/Marketing"}
-    ]
-  },
-  {
-    "conditions": [
-      {"field": "From", "predicate": "Equals", "value": "important@example.com"}
-    ],
-    "predicate": "Any",
-    "actions": [
-      {"action": "Mark as unread"}
-    ]
-  },
-  {
-    "conditions": [
-      {"field": "received_date", "predicate": "less than", "value": {"date": "2024-08-15", "unit": "days", "value": 7}},
-      {"field": "Subject", "predicate": "Does not Contain", "value": "Meeting"}
-    ],
-    "predicate": "All",
-    "actions": [
-      {"action": "Mark as read"},
-      {"action": "Move Message", "destination": "[Gmail]/Archive"}
-    ]
-  },
-  {
-    "conditions": [
-      {"field": "message", "predicate": "Contains", "value": "urgent"}
-    ],
-    "predicate": "Any",
-    "actions": [
-      {"action": "Mark as unread"},
-      {"action": "Move Message", "destination": "[Gmail]/Urgent"}
+      {"action": "Mark as read"}
     ]
   }
 ]
