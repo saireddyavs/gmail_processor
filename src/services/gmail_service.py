@@ -74,6 +74,7 @@ class GmailService:
             logger.info(f"Message {message_id} marked as read.")
         except Exception as e:
             logger.error(f"Error marking message {message_id} as read: {e}")
+            raise e
 
     def mark_as_unread(self, message_id):
         logger.info(f"Marking message {message_id} as unread...")
@@ -86,7 +87,7 @@ class GmailService:
             logger.info(f"Message {message_id} marked as unread.")
         except Exception as e:
             logger.error(f"Error marking message {message_id} as unread: {e}")
-
+    
     def move_message(self, message_id, destination_name):
         logger.info(f"Moving message {message_id} to label '{destination_name}'...")
         label_id = self.get_label_id(destination_name)
@@ -102,6 +103,7 @@ class GmailService:
             logger.info(f"Message {message_id} moved to label '{destination_name}'.")
         except Exception as e:
             logger.error(f"Error moving message {message_id} to label '{destination_name}': {e}")
+            raise e
 
     def get_label_id(self, label_name):
         logger.info(f"Fetching label ID for label name: '{label_name}'...")
@@ -116,7 +118,7 @@ class GmailService:
             return None
         except Exception as e:
             logger.error(f"Error fetching labels: {e}")
-            return None
+            raise e
 
 
 def get_gmail_service(credential_file, token_file, scopes):
