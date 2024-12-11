@@ -23,13 +23,13 @@ class Email:
         self.status = status  # Can be 'read', 'unread', etc.
 
     @classmethod
-    def from_raw_message(cls, raw_message_bytes):
+    def from_raw_message(cls, raw_message_bytes,message_id):
         try:
             # Parse the raw email bytes
             msg = BytesParser().parsebytes(raw_message_bytes)
             
             # Extract essential fields
-            message_id = msg.get('Message-ID', None)
+            # message_id = msg.get('Message-ID', None)
             sender = msg.get('From', None)
             receiver = msg.get('To', None)
             subject = msg.get('Subject', None)
@@ -56,6 +56,6 @@ class Email:
 
     def __repr__(self):
         return (
-            f"<Email ID='{self.id}' From='{self.sender}' To='{self.receiver}' "
+            f"<message_id='{self.id} Email ID='{self.id}' From='{self.sender}' To='{self.receiver}' "
             f"Subject='{self.subject}' ReceivedDate='{self.received_date}'>"
         )
