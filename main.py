@@ -4,6 +4,7 @@ from src.services.gmail_service import get_gmail_service
 from src.services.rule_engine import RuleEngine
 from config import appconfig
 from logs import logs
+import sys
 
 def initialize_services():
     """Initialize services like Gmail and Email repository."""
@@ -13,6 +14,7 @@ def initialize_services():
         # Initialize email repository
         email_repo = get_email_repository(appconfig_instance.database_file)
         email_repo.create_table()
+        email_repo.delete_all()
 
         # Initialize Gmail service
         gmail_service = get_gmail_service(appconfig_instance.credentials_file, appconfig_instance.token_file, appconfig_instance.scopes)
@@ -26,19 +28,20 @@ def initialize_services():
         raise
 
 
-def fetch_and_process_emails(gmail_service, email_repo, rule_engine):
+def fetch_and_process_emails(gmail_service, email_repo, rule_engine,num_emails):
     """Fetch emails and process them based on the rules."""
     try:
-        emails = gmail_service.fetch_emails(1)
+        emails = gmail_service.fetch_emails(num_emails)
 
         for email in emails:
             email_repo.save(email)
 
-        # emails = email_repo.get_all()
-        # for email in emails:
-        #     if email.status != 'read':
-        #         rule_engine.process_email(email)
-        #         email_repo.update_status(email.id, email.status)
+        emails = email_repo.get_all()
+        for email in emails:
+            if email.status != 'read':
+                print(email)
+                rule_engine.process_email(email)
+                email_repo.update_status(email.id, email.status)
 
     except Exception as e:
         logger.error(f"Error fetching or processing emails: {e}")
@@ -53,12 +56,14 @@ def main():
         # Setup logger
         global logger
         logger = logs.setup_logging(appconfig_instance.logs_file)
+        
+        num_emails = int(sys.argv[1]) if len(sys.argv) > 1 else 1
 
         # Initialize services
         email_repo, gmail_service, rule_engine = initialize_services()
 
         # Fetch and process emails
-        fetch_and_process_emails(gmail_service, email_repo, rule_engine)
+        fetch_and_process_emails(gmail_service, email_repo, rule_engine,num_emails)
 
     except Exception as e:
         logger.error(f"Fatal error in main execution: {e}")
