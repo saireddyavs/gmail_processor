@@ -5,11 +5,15 @@ import logging
 # Ensure the logger is set up
 logger = logging.getLogger("gmail_processor")
 
+
+
 def parse_date_time(date_string):
     formats = [
         "%a, %d %b %Y %H:%M:%S %z",  # Date with timezone offset
         "%a, %d %b %Y %H:%M:%S %Z",  # Date with named timezone
-        "%a, %d %b %Y %H:%M:%S"      # Date without timezone
+        "%a, %d %b %Y %H:%M:%S",     # Date without timezone
+        "%Y-%m-%d %H:%M:%S%z",       # ISO-like format with timezone offset
+        "%Y-%m-%d %H:%M:%S"          # ISO-like format without timezone
     ]
     
     cleaned_date = date_string.split('(')[0].strip()  # Remove anything in parentheses
@@ -17,7 +21,7 @@ def parse_date_time(date_string):
     for fmt in formats:
         try:
             dt = datetime.strptime(cleaned_date, fmt)
-            if fmt == "%a, %d %b %Y %H:%M:%S":  # Add UTC for no timezone
+            if fmt in ("%a, %d %b %Y %H:%M:%S", "%Y-%m-%d %H:%M:%S"):  # Add UTC for no timezone
                 dt = dt.replace(tzinfo=timezone.utc)
             return dt
         except ValueError:
